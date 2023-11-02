@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'connectivity_fed_platform_interface.dart';
+
 enum ConnectivityResult {
   wifi,
   mobile,
@@ -12,11 +14,14 @@ abstract class ConnectivityFed {
 }
 
 class ConnectivityFedPlugin implements ConnectivityFed {
-  static ConnectivityFedPlugin _instance;
+  // Make _instance nullable
+  static ConnectivityFedPlugin? _instance;
 
+  // Ensure the getter returns a non-null instance
   static ConnectivityFedPlugin get instance {
+    // Use the '??=' operator to assign a value to _instance if it is null
     _instance ??= ConnectivityFedPlugin._();
-    return _instance;
+    return _instance!;
   }
 
   ConnectivityFedPlugin._();
@@ -37,5 +42,9 @@ class ConnectivityFedPlugin implements ConnectivityFed {
   // This should be called by the platform-specific code when connectivity changes.
   void updateConnectivity(ConnectivityResult result) {
     _connectivityResultController.add(result);
+  }
+
+  Future<String?> getPlatformVersion() {
+    return ConnectivityFedPlatform.instance.getPlatformVersion();
   }
 }
