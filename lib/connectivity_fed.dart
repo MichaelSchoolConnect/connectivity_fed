@@ -11,6 +11,10 @@ enum ConnectivityResult {
 abstract class ConnectivityFed {
   Future<ConnectivityResult> checkConnectivity();
   Stream<ConnectivityResult> get onConnectivityChanged;
+
+  Future<String?> getPlatformVersion() {
+    return ConnectivityFedPlatform.instance.getPlatformVersion();
+  }
 }
 
 class ConnectivityFedPlugin implements ConnectivityFed {
@@ -39,9 +43,5 @@ class ConnectivityFedPlugin implements ConnectivityFed {
   // This should be called by the platform-specific code when connectivity changes.
   void updateConnectivity(ConnectivityResult result) {
     _connectivityResultController.add(result);
-  }
-
-  Future<String?> getPlatformVersion() {
-    return ConnectivityFedPlatform.instance.getPlatformVersion();
   }
 }
